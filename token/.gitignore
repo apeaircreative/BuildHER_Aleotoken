@@ -2,3 +2,6 @@ outputs/
 *.avm
 *.prover
 *.verifier
+.env
+.env.account1
+.env.account2
