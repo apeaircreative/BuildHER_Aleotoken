@@ -25,9 +25,21 @@ This project is based on the BuildHER workshop from Aleo. The original workshop 
 5. **Script Automation:**
    - Developed a comprehensive script (`run.sh`) to automate the minting and transferring processes, making it easier to execute multiple operations in sequence.
 
-## Workshop Reference
+## Environment Configuration
 
-For a detailed walkthrough of the original implementation, you can watch the BuildHER workshop on YouTube: [BuildHER Workshop](https://www.youtube.com/watch?v=slVmiwqNiRw).
+## Environment Configuration
+
+In this project, we have separated the configurations for Alice and Bob into two distinct `.env` files. This separation was implemented for the following reasons:
+
+1. **Security:** By keeping sensitive information for each account in separate files, we reduce the risk of accidental exposure. Each file contains only the necessary credentials for its respective account.
+
+2. **Clarity:** Having separate environment files makes it easier to manage and understand the configurations for each account. This clarity helps during development and testing, as it allows for quick switching between accounts without modifying a single file.
+
+3. **Flexibility:** This approach allows for easier scaling in the future. If additional accounts need to be added, we can simply create new `.env` files without affecting the existing configurations.
+
+## Script Updates
+
+The original script has been updated to reflect these changes while maintaining the core functionality. The logic for transferring tokens and managing balances remains the same, ensuring that the overall behavior of the token system is consistent with the original implementation from the workshop.
 
 ## Run Guide
 
@@ -35,7 +47,12 @@ To run this program, execute the following command:
 bash
 ./run.sh {account1|account2}
 
-Replace `{accountaccount2}` with the appropriate account you wish to use.
+
+Replace `{account1|account2}` with the appropriate account you wish to use.
+
+## Workshop Reference
+
+For a detailed walkthrough of the original implementation, you can watch the BuildHER workshop on YouTube: [BuildHER Workshop](https://www.youtube.com/watch?v=slVmiwqNiRw).
 
 ## Acknowledgments
 
