@@ -94,4 +94,4 @@ program token.aleo {
         assert(current_amount >= amount);
         Mapping::set(account, sender, current_amount - amount);
     }
-}   
+}

@@ -1,6 +1,6 @@
-import token.leo;
+import token.aleo;
 
-program test_token.leo {
+program test_token.aleo {
 
     // Test function for mint_public
     async function test_mint_public:

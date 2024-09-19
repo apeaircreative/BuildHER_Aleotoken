@@ -23,25 +23,12 @@ else
     exit 1
 fi
 
-# Swap in the private key of Alice or Bob based on the account.
+# Swap in the private key of Alice.
 echo "
 NETWORK=$NETWORK
 PRIVATE_KEY=$PRIVATE_KEY
 ENDPOINT=$ENDPOINT
 " > .env
-
-# Run the build process to ensure everything compiles before running tests
-echo "###############################################################################"
-echo "########                                                               ########"
-echo "########                       BUILDING PROJECT                       ########"
-echo "########                                                               ########"
-echo "###############################################################################"
-
-leo build
-if [ $? -ne 0 ]; then
-    echo "Build failed. Exiting."
-    exit 1
-fi
 
 # Run Tests
 echo "###############################################################################"
@@ -51,13 +38,13 @@ echo "########                                                               ###
 echo "###############################################################################"
 
 echo "Running test_mint_public..."
-leo run test_mint_public --network testnet
+leo run test_mint_public $ADDRESS
 
-echo "Running test_transfer_public..."
-leo run test_transfer_public --network testnet
+echo "Running test_transfer_insufficient_funds..."
+leo run test_transfer_insufficient_funds $ADDRESS $ADDRESS
 
-echo "Running test_transfer_pub_to_priv..."
-leo run test_transfer_pub_to_priv --network testnet
+echo "Running test_transfer_public_success..."
+leo run test_transfer_public_success $ADDRESS $ADDRESS
 
 # Publicly mint 100 tokens for Alice.
 echo "
@@ -97,7 +84,11 @@ echo "
 ########                                                               ########
 ###############################################################################
 "
-leo run transfer_private "{ owner: $ADDRESS.private, amount: 100u64.private, _nonce: 6586771265379155927089644749305420610382723873232320906747954786091923851913group.public }" $ADDRESS 20u64  # Use the address from the .env file
+leo run transfer_private "{
+        owner: $ADDRESS.private,
+        amount: 100u64.private,
+        _nonce: 6586771265379155927089644749305420610382723873232320906747954786091923851913group.public
+    }" $ADDRESS 20u64  # Use the address from the .env file
 
 # Convert 30 public tokens from Alice into 30 private tokens for Bob.
 echo "
@@ -108,7 +99,7 @@ echo "
 ########                                                               ########
 ###############################################################################
 "
-leo run transfer_pub_to_priv $ADDRESS 30u64  # Use the address from the .env file
+leo run transfer_public_to_private $ADDRESS 30u64  # Use the address from the .env file
 
 # Convert 40 private tokens from Bob into 40 public tokens for Alice.
 echo "
@@ -119,7 +110,11 @@ echo "
 ########                                                               ########
 ###############################################################################
 "
-leo run transfer_priv_to_pub "{ owner: $ADDRESS.private, amount: 80u64.private, _nonce: 1852830456042139988098466781381363679605019151318121788109768539956661608520group.public }" $ADDRESS 40u64  # Use the address from the .env file
+leo run transfer_private_to_public "{
+        owner: $ADDRESS.private,
+        amount: 80u64.private,
+        _nonce: 1852830456042139988098466781381363679605019151318121788109768539956661608520group.public
+    }" $ADDRESS 40u64  # Use the address from the .env file
 
 # Final message
 echo "All operations completed successfully for $(whoami)."
