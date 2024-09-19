@@ -23,7 +23,7 @@ else
     exit 1
 fi
 
-# Swap in the private key of Alice or Bob.
+# Swap in the private key of Alice.
 echo "
 NETWORK=$NETWORK
 PRIVATE_KEY=$PRIVATE_KEY
@@ -38,16 +38,13 @@ echo "########                                                               ###
 echo "###############################################################################"
 
 echo "Running test_mint_public..."
-leo run tests/test_token.aleo test_mint_public $ADDRESS
+leo run test_mint_public $ADDRESS
 
-echo "Running test_transfer_public..."
-leo run tests/test_token.aleo test_transfer_public $ADDRESS $ADDRESS
+echo "Running test_transfer_insufficient_funds..."
+leo run test_transfer_insufficient_funds $ADDRESS $ADDRESS
 
-echo "Running test_transfer_priv_to_pub..."
-leo run tests/test_token.aleo test_transfer_priv_to_pub $ADDRESS $ADDRESS
-
-echo "Running test_transfer_pub_to_priv..."
-leo run tests/test_token.aleo test_transfer_pub_to_priv $ADDRESS $ADDRESS
+echo "Running test_transfer_public_success..."
+leo run test_transfer_public_success $ADDRESS $ADDRESS
 
 # Publicly mint 100 tokens for Alice.
 echo "
@@ -102,7 +99,7 @@ echo "
 ########                                                               ########
 ###############################################################################
 "
-leo run transfer_pub_to_priv $ADDRESS 30u64  # Use the address from the .env file
+leo run transfer_public_to_private $ADDRESS 30u64  # Use the address from the .env file
 
 # Convert 40 private tokens from Bob into 40 public tokens for Alice.
 echo "
@@ -113,7 +110,7 @@ echo "
 ########                                                               ########
 ###############################################################################
 "
-leo run transfer_priv_to_pub "{
+leo run transfer_private_to_public "{
         owner: $ADDRESS.private,
         amount: 80u64.private,
         _nonce: 1852830456042139988098466781381363679605019151318121788109768539956661608520group.public
